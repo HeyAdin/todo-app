@@ -1,6 +1,5 @@
 const { newUserSchema, userSchema } = require('./types');
 
-
 function validNewUserInput(req, res, next) {
     const username = req.body.username;
     const email = req.body.email;
