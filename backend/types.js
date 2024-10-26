@@ -10,7 +10,7 @@ const newUserSchema = zod.object({
 // user login schema
 const userSchema = zod.object({
     email : zod.string().email(),
-    pass : zod.string().min(5).max(8)
+    pass : zod.string().min(5)
 })
 
 

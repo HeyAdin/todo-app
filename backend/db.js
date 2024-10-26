@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     pass : String
 })
 
-const users = mongoose.model('users',userSchema);
+const Users = mongoose.model('users',userSchema);
 module.exports = {
-    users
+    Users
 }
