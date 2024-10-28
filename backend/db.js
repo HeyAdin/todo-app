@@ -11,10 +11,10 @@ const userSchema = new mongoose.Schema({
 const todosSchema = new mongoose.Schema({
     title: String,
     description: String,
-    user: [{
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref : "users"
-    }]
+    }
 });
 
 const Todos = mongoose.model('todos', todosSchema);
