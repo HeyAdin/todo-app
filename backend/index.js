@@ -1,9 +1,8 @@
 const express = require('express')
 const app = express();
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
 const PORT = 8001;
-const { Users, Todos } = require('./db');
+const { Users ,Todos} = require('./db');
+const jwt = require('jsonwebtoken');
 app.use(express.json());
 
 // new users input validation
@@ -47,12 +46,12 @@ app.post('/signup', validNewUserInput, async (req, res) => {
 
 // user login route
 app.post('/login', validUserInput, (req, res) => {
-    const username = req.body.username;
     const email = req.body.email;
+    const username  = req.body.username;
     const token = jwt.sign({ username, email }, process.env.SECRET_KEY);
-    console.log(token);
     res.status(200).json({
-        msg: "logged in successfully"
+        msg: "logged in successfully",
+        token
     })
 })
 
@@ -63,13 +62,11 @@ app.post('/create-todo', async (req, res) => {
     const description = req.body.description;
     const token = req.headers.authorization;
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);        
         const emailExist = await Users.findOne({
             email: decoded.email
         })
         if (emailExist === null) {
-            console.log("check email in db")
             res.status(403).json({ msg: "unauthorised user" })
         }
         else {
@@ -83,12 +80,37 @@ app.post('/create-todo', async (req, res) => {
         }
     }
     catch (err) {
-        console.log("error while decoding")
+        return res.status(403).json({ msg: "unauthorised user" })
+    }
+
+});
+// get all the todo for a user
+app.get('/get-todo',async (req,res)=>{
+    const token = req.headers.authorization;
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        console.log(decoded)
+        const emailExist = await Users.findOne({
+            email: decoded.email
+        })
+        console.log(emailExist)
+        if (emailExist === null) {
+            res.status(403).json({ msg: "unauthorised user" })
+        }
+        else {
+            const todos = await Todos.find({
+                user : emailExist._id
+            })
+            console.log(todos)
+            res.status(200).json({ allTodos: todos });
+        }
+    }
+    catch (err) {
+        console.log(err)
         return res.status(403).json({ msg: "unauthorised user" })
     }
 
 })
-
 // Server listening
 app.listen(PORT, () => {
     console.log(`server listening on ${PORT}`);
