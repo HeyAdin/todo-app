@@ -1,10 +1,10 @@
 const express = require('express')
 const app = express();
 const PORT = 8001;
-const { Users ,Todos} = require('./db');
+const { Users, Todos } = require('./db');
 const jwt = require('jsonwebtoken');
 app.use(express.json());
-
+const authoriseUser = require('./authoriseUser');
 // new users input validation
 const { validNewUserInput, validUserInput } = require('./validateUser')
 // user exist in database
@@ -47,7 +47,7 @@ app.post('/signup', validNewUserInput, async (req, res) => {
 // user login route
 app.post('/login', validUserInput, (req, res) => {
     const email = req.body.email;
-    const username  = req.body.username;
+    const username = req.body.username;
     const token = jwt.sign({ username, email }, process.env.SECRET_KEY);
     res.status(200).json({
         msg: "logged in successfully",
@@ -57,58 +57,30 @@ app.post('/login', validUserInput, (req, res) => {
 
 
 // Create Todo
-app.post('/create-todo', async (req, res) => {
+app.post('/create-todo', authoriseUser, async (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
-    const token = req.headers.authorization;
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);        
-        const emailExist = await Users.findOne({
-            email: decoded.email
-        })
-        if (emailExist === null) {
-            res.status(403).json({ msg: "unauthorised user" })
-        }
-        else {
-            const todo = new Todos({
-                title,
-                description,
-                user : emailExist._id
-            });
-            await todo.save();
-            res.status(200).json({ msg: "todo created" });
-        }
-    }
-    catch (err) {
-        return res.status(403).json({ msg: "unauthorised user" })
-    }
+    const todo = new Todos({
+        title,
+        description,
+        user: res.locals.emailExist._id
+    });
+    await todo.save();
+    res.status(200).json({ msg: "todo created" });
+});
+
+// get all the todo for a user
+app.get('/get-todo', authoriseUser, async (req, res) => {
+    const todos = await Todos.find({
+        user: res.locals.emailExist._id
+    })
+    console.log(todos)
+    res.status(200).json({ allTodos: todos });
 
 });
-// get all the todo for a user
-app.get('/get-todo',async (req,res)=>{
-    const token = req.headers.authorization;
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        console.log(decoded)
-        const emailExist = await Users.findOne({
-            email: decoded.email
-        })
-        console.log(emailExist)
-        if (emailExist === null) {
-            res.status(403).json({ msg: "unauthorised user" })
-        }
-        else {
-            const todos = await Todos.find({
-                user : emailExist._id
-            })
-            console.log(todos)
-            res.status(200).json({ allTodos: todos });
-        }
-    }
-    catch (err) {
-        console.log(err)
-        return res.status(403).json({ msg: "unauthorised user" })
-    }
+
+// deletes a todo 
+app.delete('/delete-todo', async (req, res) => {
 
 })
 // Server listening
