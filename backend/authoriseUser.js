@@ -9,7 +9,6 @@ async function authoriseUser(req,res,next){
         res.locals.emailExist = await Users.findOne({
             email: decoded.email
         })
-        console.log(res.locals.emailExist)
         if (res.locals.emailExist === null) {
             res.status(403).json({ msg: "unauthorised user" })
         }

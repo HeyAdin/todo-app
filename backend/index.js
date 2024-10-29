@@ -80,8 +80,29 @@ app.get('/get-todo', authoriseUser, async (req, res) => {
 });
 
 // deletes a todo 
-app.delete('/delete-todo', async (req, res) => {
+app.delete('/delete-todo', authoriseUser, async (req, res) => {
+    const todoId = req.body.todoId;
+    console.log(todoId)
+    const deletedTodos = await Todos.findOneAndDelete({ _id: todoId });
+    console.log(deletedTodos);
+    res.status(200).json({ msg: "todo deleted" })
+});
 
+
+app.put('/update-todo', authoriseUser, async (req, res) => {
+    const title = req.body.title;
+    const description = req.body.description;
+    const todoId = req.body.todoId;
+    console.log(title,description,todoId)
+    const updatedTodo = await Todos.findOneAndUpdate({_id : todoId},{
+        title,
+        description
+    });
+    console.log(updatedTodo);
+    res.json({
+        msg : "todo updated"
+    })
+    
 })
 // Server listening
 app.listen(PORT, () => {
