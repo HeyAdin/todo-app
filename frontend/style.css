@@ -1,0 +1,120 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    padding: 10px 5%;
+    height: 100vh;
+    width: 100vw;
+}
+
+.navbar{
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: rgba(119, 119, 218, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.left-navbar{
+    cursor: pointer;
+}
+
+.right-topbar-ul{
+    display: flex;
+    list-style: none;
+    column-gap: 15px;
+    font-size: medium;
+}
+.right-topbar-ul li :hover{
+    cursor: pointer;
+    color: rgb(78, 78, 78);
+}
+
+.main-content{
+    margin: 0 120px;
+    margin-top: 100px;
+    display: flex;
+    gap: 250px;
+}
+
+.signup-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.signup-inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.signup-section input{
+    font-size: 20px;
+    padding: 10px;
+    font-family: system-ui;
+    border: none;
+    border-radius: 10px;
+    border-bottom: 1px solid gray;
+    background-color: rgba(224, 224, 224, 0.329);
+}
+
+.signup-section button{
+    font-size: 18px;
+    padding: 8px 15px;
+    width: 120px;
+    border-radius:20px ;
+    background-color: rgba(224, 224, 224, 0.329);
+    cursor: pointer;
+    border: 0.5px solid gray;
+    font-family: system-ui;
+    font-weight: 500;
+}
+
+.signup{
+    border-radius:25px ;
+    padding: 30px;
+    box-shadow: rgba(119, 119, 218, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    text-align: center;
+}
+.upper-signup-text h1{
+    font-size: 40px;
+}
+.upper-signup-text h3{
+    margin: 5px 0;
+    font-size: 23px;
+    font-weight: 500;
+    font-family: system-ui;
+    color: rgb(87, 87, 87);
+}
+.puncline-section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.puncline-section h1{
+    font-size: 100px;
+    font-family:monospace;
+}
+.puncline-section h3{
+    font-family: system-ui;
+    font-size: 40px;
+    color: rgb(87, 87, 87);
+    padding-bottom: 25px;
+}
+
+.puncline-section li{
+    font-family: system-ui;
+    list-style: none;
+    padding: 10px;
+    font-size: 20px;
+}
