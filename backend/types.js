@@ -4,7 +4,7 @@ const zod = require('zod');
 const newUserSchema = zod.object({
     username : zod.string(),
     email : zod.string().email(),
-    pass : zod.string().min(8).max(20)
+    pass : zod.string().min(5).max(20)
 })
 
 // user login schema

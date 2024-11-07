@@ -20,9 +20,7 @@ function validNewUserInput(req, res, next) {
 // existing user input valid
 function validUserInput(req, res, next) {
     const email = req.body.email;
-    const username = req.body.username;
     const pass = req.body.pass;
-    console.log(username,email,pass);
     const response = userSchema.safeParse({
         email,
         pass

@@ -15,7 +15,7 @@ async function userExist(email, pass) {
         email,
         pass
     })
-    console.log("I am in userExist " + exist)
+
     if (exist === null) {
         return false;
     }
@@ -52,7 +52,6 @@ app.post('/login', validUserInput, async(req, res) => {
     const pass = req.body.pass;
     if(await userExist(email,pass)){
         const token = jwt.sign({ email }, process.env.SECRET_KEY);
-        console.log("i am logging token " +token)
         res.status(200).json({
             msg: "logged in successfully",
             token
